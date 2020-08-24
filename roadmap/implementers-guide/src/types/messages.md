@@ -88,6 +88,9 @@ struct OutboundHrmpMessage {
 }
 
 struct InboundHrmpMessage {
+	/// The block number at which this message was sent.
+	/// Specifically, it is the block number at which the candidate that sends this message was
+	/// enacted.
 	pub sent_at: BlockNumber,
 	/// The message payload.
 	pub data: Vec<u8>,
@@ -122,5 +125,14 @@ enum DownwardMessage {
 	/// to be used as a basis for special protocols between the relay chain and, typically system,
 	/// paras.
 	ParachainSpecific(Vec<u8>),
+}
+
+/// A wrapped version of `DownwardMessage`. The difference is that it has attached the block number when
+/// the message was sent.
+struct InboundDownwardMessage {
+	/// The block number at which this messages was put into the downward message queue.
+	pub sent_at: BlockNumber,
+	/// The actual downward message to processes.
+	pub msg: DownwardMessage,
 }
 ```
